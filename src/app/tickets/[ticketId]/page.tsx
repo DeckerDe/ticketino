@@ -1,24 +1,37 @@
-import { initialTickets } from "@/app/data";
+import Link from "next/link";
+import { Placeholder } from "@/components/placeholder";
+import { Button } from "@/components/ui/button";
+import { initialTickets } from "@/data";
+import { ticketsPath } from "@/paths";
+import { TicketItem } from "@/ticket/components/ticket-item";
 
 type TicketPageProps = {
-    params: {
-        ticketId: string;
-    }
-}
+  params: {
+    ticketId: string;
+  };
+};
 
-const TicketPage = ({params}: TicketPageProps) => {
-    const ticket = initialTickets.find((ticket) => ticket.id === params.ticketId);
+const TicketPage = ({ params }: TicketPageProps) => {
+  const ticket = initialTickets.find((ticket) => ticket.id === params.ticketId);
 
-    if (!ticket) {
-        return <div>Ticket not found</div>
-    }
-
+  if (!ticket) {
     return (
-        <div>
-            <h2>{ticket.title}</h2>
-            <p>{ticket.content}</p>
-        </div>
+      <Placeholder
+        label="Ticket not found"
+        button={
+          <Button asChild variant="outline">
+            <Link href={ticketsPath()}>Go To Tickets</Link>
+          </Button>
+        }
+      />
     );
-}
+  }
+
+  return (
+    <div className="flex justify-center animate-fade-from-top">
+      <TicketItem ticket={ticket} isDetail />
+    </div>
+  );
+};
 
 export default TicketPage;
